@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 
-namespace GS.BAckend.Dominios.Notificacoes
+namespace GS.Backend.Dominios.Notificacoes
 {
-    public class NotificacoesFiltro
+    public class NotificacoesFiltro : IAsyncResultFilter
     {
         private readonly NotificacaoCtx _notificacaoCtx;
         public NotificacoesFiltro(NotificacaoCtx notificacaoCtx)

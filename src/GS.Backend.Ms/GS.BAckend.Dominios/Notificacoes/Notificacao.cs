@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace GS.BAckend.Dominios.Notificacoes
+namespace GS.Backend.Dominios.Notificacoes
 {
     public class Notificacao
     {

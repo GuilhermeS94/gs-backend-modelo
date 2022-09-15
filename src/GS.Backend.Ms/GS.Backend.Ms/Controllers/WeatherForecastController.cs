@@ -1,33 +1,35 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GS.Backend.Dominios.Comandos;
+using GS.Backend.Dominios.Idiomas;
+using GS.Backend.Dominios.Modelos.Resultados;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace GS.Backend.Ms.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("healthcheck")]
 public class WeatherForecastController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
+    private readonly IMediator _mediator;
+    private readonly IStringLocalizer _idioma;
+    private readonly IConfiguration _configs;
     private readonly ILogger<WeatherForecastController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, IMediator mediator, IStringLocalizer<UsarIdioma> idioma, IConfiguration configs)
     {
         _logger = logger;
+        _mediator = mediator;
+        _idioma = idioma;
+        _configs = configs;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpPost(Name = "testar")]
+    public async Task<IActionResult> PostTestar([FromBody] TestarComando comando)
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+        TestarResultado saida = await _mediator.Send(comando);
+
+        return Ok(saida);
     }
 }
 

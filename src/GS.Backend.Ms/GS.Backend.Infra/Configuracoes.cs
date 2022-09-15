@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using GS.BAckend.Dominios.Notificacoes;
-using GS.BAckend.Dominios.Middlewares;
+using GS.Backend.Dominios.Notificacoes;
+using GS.Backend.Dominios.Middlewares;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using Newtonsoft.Json.Serialization;
@@ -16,12 +16,15 @@ using Microsoft.Extensions.Options;
 using MediatR;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using GS.Backend.Dominios.Comandos;
+using GS.Backend.Dominios.ServicosExternos;
+using GS.Backend.ServicosExternos;
 
 namespace GS.Backend.Infra;
 public static class Configuracoes
 {
     /// <summary>
-    /// Adicionar endpoint e setup de swagger
+    /// Adicionar endpoint e documentacao de swagger
     /// </summary>
     /// <param name="services"></param>
     /// <returns></returns>
@@ -86,7 +89,7 @@ public static class Configuracoes
     public static IServiceCollection AddComandos(this IServiceCollection services)
     {
         List<Assembly> lista = new List<Assembly>() {
-                typeof(EfetuarLoginComando).Assembly,
+                typeof(TestarComando).Assembly,
             };
 
         services.AddMvcCore().AddApiExplorer()
@@ -109,8 +112,7 @@ public static class Configuracoes
     /// <returns></returns>
     public static IServiceCollection AddServicosExternos(this IServiceCollection services)
     {
-
-        services.AddScoped<IEfetuarLoginServicoExterno, EfetuarLoginServicoExterno>();
+        services.AddScoped<ITestarServicoExterno, TestarServicoExterno>();
 
         return services;
     }
@@ -134,23 +136,25 @@ public static class Configuracoes
     /// <returns></returns>
     public static IServiceCollection AddIdiomas(this IServiceCollection services)
     {
-        services.AddLocalization(options => options.ResourcesPath = "Resources");
-
+        services.AddLocalization();
         services.Configure<RequestLocalizationOptions>(opcoes => {
             CultureInfo[] idiomasDaAplicacao = new[] {
                 new CultureInfo("en-US"),
                 new CultureInfo("pt-BR"),
                 new CultureInfo("es-ES")
             };
+
             opcoes.SupportedCultures = idiomasDaAplicacao;
             opcoes.SupportedUICultures = idiomasDaAplicacao;
+
             opcoes.RequestCultureProviders.Insert(0, new CustomRequestCultureProvider(ctx => {
                 string idiomaRequest = ctx.Request.Headers["Accept-Language"].ToString();
-                string idiomaDefault = (string.IsNullOrEmpty(idiomaRequest) ||
-                                        !idiomasDaAplicacao.Contains(new CultureInfo(idiomaRequest))) ?
-                                        "pt-BR" : idiomaRequest;
+                string escolherUmIdioma = idiomaRequest.Split(',').FirstOrDefault();
+                string idiomaDefault = (string.IsNullOrEmpty(escolherUmIdioma) ||
+                                        !idiomasDaAplicacao.Contains(new CultureInfo(escolherUmIdioma))) ?
+                                        "pt-BR" : escolherUmIdioma;
 
-                return Task.FromResult(new ProviderCultureResult(idiomaDefault, idiomaDefault));
+                return Task.FromResult<ProviderCultureResult?>(new ProviderCultureResult(idiomaDefault, idiomaDefault));
             }));
         });
 

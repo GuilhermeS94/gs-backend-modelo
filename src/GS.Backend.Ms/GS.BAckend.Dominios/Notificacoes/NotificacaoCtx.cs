@@ -2,7 +2,7 @@
 using System.Linq;
 using FluentValidation.Results;
 
-namespace GS.BAckend.Dominios.Notificacoes
+namespace GS.Backend.Dominios.Notificacoes
 {
     public class NotificacaoCtx
     {

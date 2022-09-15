@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace GS.BAckend.Dominios.Excecoes
+namespace GS.Backend.Dominios.Excecoes
 {
     public class ExcecaoGlobal
     {

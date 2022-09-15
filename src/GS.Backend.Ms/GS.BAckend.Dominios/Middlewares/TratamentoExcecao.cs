@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Net;
 using FluentValidation;
-using GS.BAckend.Dominios.Excecoes;
+using GS.Backend.Dominios.Excecoes;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
-namespace GS.BAckend.Dominios.Middlewares
+namespace GS.Backend.Dominios.Middlewares
 {
     public class TratamentoExcecao
     {
