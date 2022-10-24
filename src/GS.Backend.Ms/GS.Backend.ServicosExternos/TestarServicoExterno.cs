@@ -19,12 +19,12 @@ public class TestarServicoExterno : ITestarServicoExterno
 
     public async Task<TestarSaida> Processar(TestarEntrada entrada)
     {
-        return new TestarSaida {
+        return await Task.Run(()=> new TestarSaida {
             Informacoes = new List<string> {
                 _idioma["idiomaConfigurado"].Value,
                 string.Format("Sua pergunta foi: \"{0}\"", entrada.Pergunta)
             }
-        };
+        });
     }
 }
 

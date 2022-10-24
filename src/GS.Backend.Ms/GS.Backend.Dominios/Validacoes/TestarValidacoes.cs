@@ -11,6 +11,8 @@ namespace GS.Backend.Dominios.Validacoes
         public TestarValidacoes(IStringLocalizer<UsarIdioma> usarIdioma)
         {
             RuleFor(e => e.Pergunta)
+                .NotNull()
+                .WithMessage(usarIdioma["msgObrigatorio"].Value)
                 .NotEmpty()
                 .WithMessage(usarIdioma["msgObrigatorio"].Value)
                 .MinimumLength(5)
@@ -19,7 +21,6 @@ namespace GS.Backend.Dominios.Validacoes
                 .WithMessage(usarIdioma["msgLonga"].Value)
                 .Matches("[?]")
                 .WithMessage(usarIdioma["msgNaoEPergunta"].Value);
-
         }
     }
 }

@@ -58,7 +58,7 @@ namespace GS.Backend.Dominios.Idiomas {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Esta usando Inglês en-US.
+        ///   Looks up a localized string similar to You are using English en-US.
         /// </summary>
         internal static string idiomaConfigurado {
             get {

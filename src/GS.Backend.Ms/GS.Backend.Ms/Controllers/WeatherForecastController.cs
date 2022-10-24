@@ -24,7 +24,7 @@ public class WeatherForecastController : ControllerBase
         _configs = configs;
     }
 
-    [HttpPost(Name = "testar")]
+    [HttpPost("testar")]
     public async Task<IActionResult> PostTestar([FromBody] TestarComando comando)
     {
         TestarResultado saida = await _mediator.Send(comando);
